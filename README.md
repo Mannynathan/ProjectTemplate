@@ -2,116 +2,109 @@
 
 # Project Title
 
-* **One Sentence Summary** Ex: This repository holds an attempt to apply LSTMs to Stock Market using data from
-"Get Rich" Kaggle challenge (provide link). 
+**Customer Churn Prediction Using Tabular Data**
+
+## One Sentence Summary
+
+This repository contains an end-to-end machine learning project that predicts bank customer churn using demographic and financial features from a public Kaggle dataset (similar to [Churn Modelling Dataset](https://www.kaggle.com/datasets/shubh0799/churn-modelling)).
+
+---
 
 ## Overview
 
-* This section could contain a short paragraph which include the following:
-  * **Definition of the tasks / challenge**  Ex: The task, as defined by the Kaggle challenge is to use a time series of 12 features, sampled daily for 1 month, to predict the next day's price of a stock.
-  * **Your approach** Ex: The approach in this repository formulates the problem as regression task, using deep recurrent neural networks as the model with the full time series of features as input. We compared the performance of 3 different network architectures.
-  * **Summary of the performance achieved** Ex: Our best model was able to predict the next day stock price within 23%, 90% of the time. At the time of writing, the best performance on Kaggle of this metric is 18%.
+**Definition of the Task**  
+The goal is to predict whether a customer will exit (churn) based on personal and account-related features such as Age, Geography, Credit Score, and Account Activity. The task is a binary classification problem, where the output is either 0 (no churn) or 1 (churn).
 
-## Summary of Workdone
+**Approach**  
+We formulated this as a binary classification task using a Random Forest Classifier. Numerical features were scaled, and categorical features were one-hot encoded. We built a preprocessing and modeling pipeline using Scikit-learn to streamline the workflow.
 
-Include only the sections that are relevant an appropriate.
+**Summary of Performance**  
+Our model achieved a validation **ROC AUC score of 0.8717**.  
+The overall validation **accuracy was 86%**. Precision, recall, and F1 scores indicated strong predictive performance, especially for the majority class.
+
+---
+
+## Summary of Work Done
+
+---
 
 ### Data
 
-* Data:
-  * Type: For example
-    * Input: medical images (1000x1000 pixel jpegs), CSV file: image filename -> diagnosis
-    * Input: CSV file of features, output: signal/background flag in 1st column.
-  * Size: How much data?
-  * Instances (Train, Test, Validation Split): how many data points? Ex: 1000 patients for training, 200 for testing, none for validation
+**Type:**  
+- Input: Tabular CSV file with 10,000+ customer records.
+- Features: Mix of numerical (e.g., CreditScore, Balance) and categorical (e.g., Gender, Geography) data.
 
-#### Preprocessing / Clean up
+**Size:**  
+- ~10,000 rows  
+- 13 feature columns + 1 target column (`Exited`)
 
-* Describe any manipulations you performed to the data.
+**Instances:**  
+- 80% for training (8,000 customers)  
+- 20% for validation (2,000 customers)
 
-#### Data Visualization
+---
 
-Show a few visualization of the data and say a few words about what you see.
+### Preprocessing / Cleanup
+
+- Dropped ID columns (`CustomerId`, `Surname`, `id`) that are irrelevant for prediction.
+- Handled categorical variables (`Gender`, `Geography`) using One-Hot Encoding.
+- Scaled numerical features (`CreditScore`, `Age`, `Balance`, etc.) using StandardScaler.
+
+---
+
+### Data Visualization
+
+- Histograms plotted for numerical features showing churn vs non-churn distribution.
+- Bar plots plotted for categorical features showing differences in churn rates by Geography and Gender.
+- Identified important trends: older age and higher balance correlated with churn.
+
+---
 
 ### Problem Formulation
 
-* Define:
-  * Input / Output
-  * Models
-    * Describe the different models you tried and why.
-  * Loss, Optimizer, other Hyperparameters.
+**Input:**  
+- Processed numerical and categorical customer data.
+
+**Output:**  
+- Binary label: `Exited = 1` if customer churned, `Exited = 0` otherwise.
+
+**Model:**  
+- Random Forest Classifier (100 trees)
+
+**Loss, Optimizer, Hyperparameters:**  
+- Default scikit-learn loss (Gini impurity for splits)
+- 100 estimators (trees)
+- Random state fixed for reproducibility
+
+---
 
 ### Training
 
-* Describe the training:
-  * How you trained: software and hardware.
-  * How did training take.
-  * Training curves (loss vs epoch for test/train).
-  * How did you decide to stop training.
-  * Any difficulties? How did you resolve them?
+- **Hardware:** MacBook / PC CPU
+- **Software:** Python 3.10+, Jupyter Notebook
+- **Training Time:** ~1-2 minutes
+- **Training Details:**
+  - Split 80/20 for train/validation.
+  - Trained Random Forest with pipeline including preprocessing steps.
+  - Evaluated using validation ROC AUC, accuracy, and F1-score.
+
+- **Difficulties Encountered:**
+  - Categorical encoding needed careful setup.
+  - Slight imbalance in churn classes (customers leaving were fewer than staying).
+
+---
 
 ### Performance Comparison
 
-* Clearly define the key performance metric(s).
-* Show/compare results in one table.
-* Show one (or few) visualization(s) of results, for example ROC curves.
+| Metric        | Score    |
+|---------------|----------|
+| Accuracy      | 86%      |
+| ROC AUC Score | 0.8717   |
+| Macro F1-Score| 0.76     |
 
-### Conclusions
-
-* State any conclusions you can infer from your work. Example: LSTM work better than GRU.
-
-### Future Work
-
-* What would be the next thing that you would try.
-* What are some other studies that can be done starting from here.
-
-## How to reproduce results
-
-* In this section, provide instructions at least one of the following:
-   * Reproduce your results fully, including training.
-   * Apply this package to other data. For example, how to use the model you trained.
-   * Use this package to perform their own study.
-* Also describe what resources to use for this package, if appropirate. For example, point them to Collab and TPUs.
-
-### Overview of files in repository
-
-* Describe the directory structure, if any.
-* List all relavent files and describe their role in the package.
-* An example:
-  * utils.py: various functions that are used in cleaning and visualizing data.
-  * preprocess.ipynb: Takes input data in CSV and writes out data frame after cleanup.
-  * visualization.ipynb: Creates various visualizations of the data.
-  * models.py: Contains functions that build the various models.
-  * training-model-1.ipynb: Trains the first model and saves model during training.
-  * training-model-2.ipynb: Trains the second model and saves model during training.
-  * training-model-3.ipynb: Trains the third model and saves model during training.
-  * performance.ipynb: loads multiple trained models and compares results.
-  * inference.ipynb: loads a trained model and applies it to test data to create kaggle submission.
-
-* Note that all of these notebooks should contain enough text for someone to understand what is happening.
-
-### Software Setup
-* List all of the required packages.
-* If not standard, provide or point to instruction for installing the packages.
-* Describe how to install your package.
-
-### Data
-
-* Point to where they can download the data.
-* Lead them through preprocessing steps, if necessary.
-
-### Training
-
-* Describe how to train the model
-
-#### Performance Evaluation
-
-* Describe how to run the performance evaluation.
+**Classification Report:**
 
 
-## Citations
-
-* Provide any references.
 
 
 
